@@ -251,7 +251,7 @@ const LoginStorage = (() => {
 
     /** Retorna o tema salvo */
     function getTheme() {
-        return localStorage.getItem(KEYS.THEME) || 'light';
+        return localStorage.getItem(KEYS.THEME) || 'dark';
     }
 
     /** Salva o tema */

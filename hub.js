@@ -183,7 +183,7 @@ const HubUI = (() => {
 
     /* --- Tema --- */
     function loadTheme() {
-        const t = localStorage.getItem(STORAGE_KEYS.THEME) || 'light';
+        const t = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
         document.documentElement.setAttribute('data-theme', t);
     }
 
