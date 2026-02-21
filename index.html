@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YT Toolbox — do Jurilson</title>
+
+  <!-- Guard de sessão: redireciona para landing se não autenticado -->
+  <script>
+    (function () {
+      if (!localStorage.getItem('yt_session_v1')) {
+        window.location.replace('landing.html');
+      }
+    })();
+  </script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <h1>YT Toolbox do JURILSON GAMEPLAY</h1>
+        <span class="pill">Studio <b>Local</b> • Shorts + Longos</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="icon-btn" id="themeToggle" aria-label="Alternar tema" title="Tema">🌓</button>
+        <button class="icon-btn" id="btnLogout" aria-label="Sair da conta" title="Sair"
+          style="font-size:16px">🚪</button>
+      </div>
+    </div>
+
+    <!-- Barra principal (sempre visível) -->
+    <div class="card searchbar" aria-label="Barra principal">
+      <div class="field">
+        <span class="hint">🔗</span>
+        <input id="videoUrl" type="text" placeholder="Cole o link do vídeo do YouTube…" autocomplete="off" />
+      </div>
+      <button class="btn btn-primary" id="btnAnalisar"><span id="analisarIcon">⚡</span><span
+          id="analisarText">Analisar</span></button>
+      <button class="btn btn-ghost" id="btnLimpar" title="Limpar">✕</button>
+    </div>
+
+    <div class="stack" style="margin-top:14px">
+      <div class="ia-grid">
+        <a href="https://chatgpt.com/" target="_blank" rel="noreferrer">🤖 ChatGPT</a>
+        <a href="https://gemini.google.com/" target="_blank" rel="noreferrer">♊ Gemini</a>
+        <a href="https://claude.ai/" target="_blank" rel="noreferrer">🎭 Claude</a>
+        <a href="https://notebooklm.google.com/" target="_blank" rel="noreferrer">📓 NotebookLM</a>
+      </div>
+
+      <!-- TOP NAV -->
+      <div class="topnav" role="tablist" aria-label="Navegação principal">
+        <button class="btn btn-tab" role="tab" aria-selected="true" data-top-tab="top-producao">⚙️ PRODUÇÃO</button>
+        <button class="btn btn-tab" role="tab" aria-selected="false" data-top-tab="top-canais">📺 CANAIS PARA
+          KIBE</button>
+      </div>
+
+      <!-- =========================
+           ABA: PRODUÇÃO
+      ========================== -->
+      <section class="card panel" id="top-producao" role="tabpanel">
+        <h2>PRODUÇÃO</h2>
+
+        <!-- SUBNAV inside PRODUÇÃO -->
+        <div class="subnav" role="tablist" aria-label="Seções de Produção">
+          <button class="btn btn-tab" role="tab" aria-selected="true" data-sub-tab="sub-workflow">⚡ Workflow</button>
+          <button class="btn btn-tab" role="tab" aria-selected="false" data-sub-tab="sub-prompts">🧠 Prompts</button>
+          <button class="btn btn-tab" role="tab" aria-selected="false" data-sub-tab="sub-historico">🗂️
+            Histórico</button>
+          <button class="btn btn-tab" role="tab" aria-selected="false" data-sub-tab="sub-config">🧩 Config</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <!-- SUB: Workflow -->
+        <section id="sub-workflow" role="tabpanel">
+          <div class="card title-box" id="titleBox" style="margin-bottom:14px">
+            <span class="title" id="videoTitle">—</span>
+            <div class="title-actions">
+              <a class="btn" id="linkYtOriginal" target="_blank" rel="noreferrer">🌐 YouTube</a>
+              <button class="btn" id="btnCopiarTitulo">📋 Copiar título</button>
+              <button class="btn" id="btnAbrirEditor">📝 Editor de Roteiro</button>
+            </div>
+          </div>
+
+          <div class="card result">
+            <div class="result-grid">
+              <div class="stack">
+                <div class="thumb">
+                  <span class="badge" id="thumbBadge">THUMB</span>
+                  <img id="thumbImgPreview" alt="Prévia da thumbnail" />
+                </div>
+                <a class="btn" id="btnDownloadThumb" target="_blank" rel="noreferrer">🖼️ Abrir Thumbnail</a>
+              </div>
+
+              <div class="actions">
+                <a class="btn" id="linkVideo" target="_blank" rel="noreferrer">▶️ Abrir vídeo</a>
+                <button class="btn" id="btnCopiarLink">🔗 Copiar link</button>
+
+                <div class="row-2">
+                  <a class="btn" href="https://youtubetotranscript.com/" target="_blank" rel="noreferrer">📝
+                    Transcrição</a>
+                  <a class="btn" href="https://toolkitsuite.com/youtube-tag-extractor/" target="_blank"
+                    rel="noreferrer">🏷️ Tags</a>
+                </div>
+
+                <div class="hr"></div>
+
+                <div class="row">
+                  <span class="chip">Atalho rápido: copie um prompt pronto abaixo</span>
+                  <div class="row-3">
+                    <button class="btn" data-copy-prompt="thumb">🎯 Thumb</button>
+                    <button class="btn" data-copy-prompt="short">📱 Shorts</button>
+                    <button class="btn" data-copy-prompt="roteiro">✍️ Longos</button>
+                  </div>
+                </div>
+
+                <p class="help">
+                  Dica no Mac: rode com Live Server (VS Code) ou <b>python3 -m http.server 5500</b> para ficar liso como
+                  app.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SUB: Prompts -->
+        <section id="sub-prompts" role="tabpanel" hidden>
+          <h2 style="margin-top:0">PROMPT MANAGER</h2>
+          <p class="help">Edite seus prompts aqui e eles ficam salvos no seu Mac (localStorage). Export/Import na
+            Config.</p>
+
+          <div class="row-2">
+            <div class="row">
+              <label class="help" for="promptSelect"><b>Escolha o prompt</b></label>
+              <select id="promptSelect">
+                <option value="thumb">Thumbnail (CTR)</option>
+                <option value="short">Shorts (gancho rápido)</option>
+                <option value="roteiro">Vídeo longo (roteiro)</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label class="help" for="statusSelect"><b>Status padrão ao salvar automaticamente</b></label>
+              <select id="statusSelect">
+                <option value="IDEIA">IDEIA</option>
+                <option value="ROTEIRO">ROTEIRO</option>
+                <option value="GRAVADO">GRAVADO</option>
+                <option value="EDITADO">EDITADO</option>
+                <option value="POSTADO">POSTADO</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <textarea id="promptEditor" placeholder="Escreva/cole seu prompt aqui…"></textarea>
+          </div>
+
+          <div class="row-3">
+            <button class="btn btn-primary" id="btnSalvarPrompt">💾 Salvar prompt</button>
+            <button class="btn" id="btnCopiarPromptAtual">📋 Copiar prompt</button>
+            <button class="btn btn-danger" id="btnResetPrompt">↩︎ Restaurar padrão</button>
+          </div>
+        </section>
+
+        <!-- SUB: Histórico -->
+        <section id="sub-historico" role="tabpanel" hidden>
+          <div class="history-head">
+            <h3>ARQUIVO RECENTE</h3>
+            <div class="history-tools">
+              <input class="mini-input" id="historySearch" placeholder="Buscar por título…" />
+              <select class="mini-input" id="historyFilterStatus" style="width:160px">
+                <option value="">Status: todos</option>
+                <option value="IDEIA">IDEIA</option>
+                <option value="ROTEIRO">ROTEIRO</option>
+                <option value="GRAVADO">GRAVADO</option>
+                <option value="EDITADO">EDITADO</option>
+                <option value="POSTADO">POSTADO</option>
+              </select>
+              <button class="btn btn-danger" id="btnLimparHistorico">Limpar tudo</button>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="historyGrid"></div>
+        </section>
+
+        <!-- SUB: Config -->
+        <section id="sub-config" role="tabpanel" hidden>
+          <h2 style="margin-top:0">CONFIG (BACKUP/RESTORE)</h2>
+          <p class="help">Backup/restore das configurações (prompts + histórico + roteiros + canais) em JSON.</p>
+
+          <div class="row-2">
+            <button class="btn btn-primary" id="btnExportar">⬇️ Exportar JSON</button>
+            <label class="btn" for="importFile" style="cursor:pointer">⬆️ Importar JSON</label>
+            <input id="importFile" type="file" accept="application/json" style="display:none">
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row-2">
+            <button class="btn btn-danger" id="btnResetTudo">⚠️ Resetar tudo</button>
+            <button class="btn" id="btnAbrirPastaDica">💡 Dica: “App” no Mac</button>
+          </div>
+
+          <div class="card" style="margin-top:12px; padding:14px">
+            <p class="help" id="dicaTexto" style="margin:0">
+              Para rodar como app local no Mac: abra no VS Code com Live Server, ou no Terminal execute:
+              <b>python3 -m http.server 5500</b> na pasta do projeto e acesse <b>http://localhost:5500</b>.
+            </p>
+          </div>
+        </section>
+      </section>
+
+      <!-- =========================
+           ABA: CANAIS PARA KIBE
+      ========================== -->
+      <section class="card panel" id="top-canais" role="tabpanel" hidden>
+        <h2>CANAIS PARA KIBE</h2>
+        <p class="help">
+          Aqui é sua lista de canais para <b>referência/inspiração</b>: você salva link, nicho e notas.
+          (Dica: use pra estudar estrutura, títulos, thumbnails e ganchos — sem copiar conteúdo literal.)
+        </p>
+
+        <div class="card" style="padding:14px">
+          <div class="row-3">
+            <input class="mini-input" id="chNome" placeholder="Nome do canal (opcional)" />
+            <input class="mini-input" id="chNicho" placeholder="Nicho (ex.: INSS, finanças, games…)" />
+            <button class="btn btn-primary" id="btnAddCanal">➕ Adicionar</button>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <input class="mini-input" id="chUrl"
+              placeholder="Cole o link do canal (YouTube) — ex.: https://www.youtube.com/@canal" />
+          </div>
+          <div class="row" style="margin-top:10px">
+            <textarea id="chNotas" placeholder="Notas rápidas (o que você quer estudar nesse canal?)"
+              style="min-height:120px"></textarea>
+          </div>
+        </div>
+
+        <div class="history-head" style="margin-top:14px">
+          <h3>LISTA</h3>
+          <div class="history-tools">
+            <input class="mini-input" id="canalSearch" placeholder="Buscar canal…" />
+            <input class="mini-input" id="canalFilterNicho" placeholder="Filtrar por nicho…" style="width:180px" />
+            <button class="btn btn-danger" id="btnLimparCanais">Limpar canais</button>
+          </div>
+        </div>
+
+        <div class="grid-cards" id="canaisGrid"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copiado ✅</div>
+
+  <!-- Modal: Editor de Roteiro -->
+  <div class="modal" id="roteiroModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Editor de roteiro">
+      <div class="modal-head">
+        <div>
+          <div style="font-weight:950;font-size:13px">Editor de Roteiro</div>
+          <div style="font-size:11px; opacity:.7; font-weight:850" id="roteiroMeta">Roteiro global (não vinculado)</div>
+        </div>
+        <button class="btn btn-ghost" id="btnFecharEditor">✕</button>
+      </div>
+
+      <textarea id="roteiroEditor" placeholder="Cole seu roteiro aqui…"></textarea>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btnSalvarRoteiro">💾 Salvar agora</button>
+        <button class="btn" id="btnCopiarRoteiro">📋 Copiar</button>
+        <button class="btn" id="btnBaixarRoteiro">⬇️ Baixar .txt</button>
+        <button class="btn btn-danger" id="btnLimparRoteiro">Limpar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <!-- Lógica de logout -->
+  <script>
+    document.getElementById('btnLogout').addEventListener('click', function () {
+      if (confirm('Deseja sair da sua conta?')) {
+        localStorage.removeItem('yt_session_v1');
+        window.location.replace('login.html');
+      }
+    });
+  </script>
+</body>
+
+</html>

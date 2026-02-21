@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YT Toolbox — Studio Local para Criadores</title>
+    <meta name="description"
+        content="YT Toolbox é o seu estúdio local completo para criadores de conteúdo do YouTube. Gerencie títulos, thumbnails, roteiros e muito mais." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="landing.css" />
+</head>
+
+<body class="lp-body">
+
+    <!-- Canvas: partículas de fundo -->
+    <canvas id="lpCanvas"></canvas>
+
+    <!-- Orbs de luz neon — fundo contínuo e fluido -->
+    <div class="lp-glow-bg" aria-hidden="true">
+        <div class="lp-orb lp-orb--1"></div>
+        <div class="lp-orb lp-orb--2"></div>
+        <div class="lp-orb lp-orb--3"></div>
+        <div class="lp-orb lp-orb--4"></div>
+        <div class="lp-orb lp-orb--5"></div>
+    </div>
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="lp-nav lp-pending" id="lpNav" data-reveal="0" role="navigation" aria-label="Navegação principal">
+        <div class="lp-nav-inner">
+            <!-- Logo -->
+            <a href="#" class="lp-logo" aria-label="YT Toolbox início">
+                <span class="lp-logo-icon">🎬</span>
+                <span class="lp-logo-text">YT <strong>Toolbox</strong></span>
+            </a>
+
+            <!-- Ações do topo -->
+            <div class="lp-nav-actions">
+                <a href="login.html" class="btn lp-btn-login" id="btnNavLogin">
+                    Fazer login
+                </a>
+                <!-- Botão Criar Conta com efeito de luz circundante -->
+                <a href="login.html#criar" class="lp-btn-signup" id="btnNavSignup" aria-label="Criar conta grátis">
+                    <span class="lp-btn-signup-light"></span>
+                    <span class="lp-btn-signup-text">✨ Criar conta</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===================== HERO ===================== -->
+    <main>
+        <section class="lp-hero" aria-labelledby="heroTitle">
+            <div class="lp-hero-badge lp-pending" data-reveal="1">
+                <span>🚀</span>
+                <span>Studio Local • Seus dados ficam só no seu dispositivo</span>
+            </div>
+            <h1 class="lp-hero-title" id="heroTitle" aria-label="O estúdio completo para criadores do YouTube">
+                <span id="typeLine1"></span><span class="lp-type-cursor" id="typeCursor1">|</span><br />
+                <span class="lp-gradient-text" id="typeLine2"></span><span class="lp-type-cursor lp-type-cursor--hide"
+                    id="typeCursor2">|</span>
+            </h1>
+            <p class="lp-hero-desc lp-pending" data-reveal="2">
+                Gere títulos otimizados, crie thumbnails, escreva roteiros com IA e
+                acompanhe todos os seus vídeos — tudo rodando localmente, sem
+                depender de nenhuma nuvem.
+            </p>
+            <div class="lp-hero-ctas lp-pending" data-reveal="3">
+                <a href="login.html#criar" class="lp-btn-signup lp-btn-signup--lg" id="btnHeroCriar"
+                    aria-label="Criar conta grátis">
+                    <span class="lp-btn-signup-light"></span>
+                    <span class="lp-btn-signup-text">✨ Criar conta grátis</span>
+                </a>
+                <a href="login.html" class="btn lp-btn-login lp-btn-login--lg" id="btnHeroLogin">
+                    Já tenho conta →
+                </a>
+            </div>
+            <!-- Stats rápidas -->
+            <div class="lp-stats lp-pending" data-reveal="4" aria-label="Estatísticas da plataforma">
+                <div class="lp-stat">
+                    <span class="lp-stat-num">100%</span>
+                    <span class="lp-stat-label">Local & Privado</span>
+                </div>
+                <div class="lp-stat-sep"></div>
+                <div class="lp-stat">
+                    <span class="lp-stat-num">∞</span>
+                    <span class="lp-stat-label">Vídeos gerenciados</span>
+                </div>
+                <div class="lp-stat-sep"></div>
+                <div class="lp-stat">
+                    <span class="lp-stat-num">0</span>
+                    <span class="lp-stat-label">Assinatura mensal</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== FEATURES ===================== -->
+        <section class="lp-features" aria-label="Funcionalidades">
+            <div class="lp-section-header">
+                <h2 class="lp-section-title">Tudo que você precisa em <span class="lp-scribble-wrap">um só lugar<svg
+                            class="lp-scribble-svg" viewBox="0 0 260 18" aria-hidden="true" preserveAspectRatio="none">
+                            <path class="lp-scribble-path"
+                                d="M4,10 C30,4 60,16 90,8 C120,1 150,15 180,7 C210,1 235,14 256,9" />
+                        </svg></span></h2>
+                <p class="lp-section-sub">Ferramentas poderosas pensadas para quem leva o canal a sério.</p>
+            </div>
+            <div class="lp-features-grid">
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">🎯</div>
+                    <h3 class="lp-feature-title">Títulos com IA</h3>
+                    <p class="lp-feature-desc">Gere dezenas de opções de títulos otimizados para SEO e CTR com um
+                        clique.</p>
+                </article>
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">🖼️</div>
+                    <h3 class="lp-feature-title">Thumbnails</h3>
+                    <p class="lp-feature-desc">Crie conceitos de thumbnail com textos, cores e layouts de alta
+                        conversão.</p>
+                </article>
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">📝</div>
+                    <h3 class="lp-feature-title">Roteiros</h3>
+                    <p class="lp-feature-desc">Escreva roteiros completos com estrutura de gancho, desenvolvimento e
+                        CTA.</p>
+                </article>
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">📊</div>
+                    <h3 class="lp-feature-title">Dashboard de Vídeos</h3>
+                    <p class="lp-feature-desc">Acompanhe o histórico de todos os seus vídeos com métricas e status.</p>
+                </article>
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">📺</div>
+                    <h3 class="lp-feature-title">Multi-canal</h3>
+                    <p class="lp-feature-desc">Gerencie vários canais do YouTube separados em um único painel central.
+                    </p>
+                </article>
+
+                <article class="lp-feature-card" tabindex="0">
+                    <div class="lp-feature-icon">🔐</div>
+                    <h3 class="lp-feature-title">100% Privado</h3>
+                    <p class="lp-feature-desc">Seus dados ficam só no seu dispositivo. Sem servidores externos, sem
+                        assinatura.</p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ===================== CTA FINAL ===================== -->
+        <section class="lp-cta-section" aria-label="Chamada para ação">
+            <div class="lp-cta-card">
+                <div class="lp-cta-glow"></div>
+                <h2 class="lp-cta-title">Pronto para turbinar seu canal?</h2>
+                <p class="lp-cta-desc">Crie sua conta agora e comece a usar o YT Toolbox em segundos. É gratuito.</p>
+                <a href="login.html#criar" class="lp-btn-signup lp-btn-signup--xl" id="btnCtaCriar"
+                    aria-label="Criar conta grátis agora">
+                    <span class="lp-btn-signup-light"></span>
+                    <span class="lp-btn-signup-text">🚀 Começar agora — de graça</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="lp-footer" role="contentinfo">
+        <p>YT Toolbox &nbsp;•&nbsp; Studio Local &nbsp;•&nbsp; Seus dados ficam só no seu dispositivo 🔐</p>
+    </footer>
+
+    <script src="landing.js"></script>
+</body>
+
+</html>

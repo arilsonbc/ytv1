@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hub — YT Toolbox</title>
+    <meta name="description" content="Escolha seu destino no YT Toolbox Studio Local." />
+
+    <!-- Guard de sessão: redireciona para login se não autenticado -->
+    <script>
+        (function () {
+            if (!localStorage.getItem('yt_session_v1')) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="hub.css" />
+</head>
+
+<body class="hub-body">
+
+    <!-- Canvas rede neural (reutilizamos a mesma engine) -->
+    <canvas id="hubCanvas"></canvas>
+
+    <!-- Header -->
+    <header class="hub-header">
+        <div class="hub-brand">
+            <span class="hub-logo">🎬</span>
+            <span class="hub-brand-name">YT Toolbox</span>
+            <span class="pill">Studio <b>Local</b></span>
+        </div>
+        <div class="hub-header-actions">
+            <span class="hub-user-badge" id="hubUserBadge">👤</span>
+            <button class="icon-btn" id="hubThemeToggle" aria-label="Alternar tema" title="Tema">🌓</button>
+            <button class="icon-btn" id="hubLogout" aria-label="Sair" title="Sair" style="font-size:16px">🚪</button>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="hub-main" role="main">
+
+        <!-- Saudação -->
+        <div class="hub-greeting">
+            <h1 class="hub-title">Para onde vamos hoje?</h1>
+            <p class="hub-subtitle">Escolha uma ferramenta para continuar</p>
+        </div>
+
+        <!-- Cards de destino -->
+        <div class="hub-grid">
+
+            <!-- Card 1: YT Toolbox Dashboard -->
+            <a href="index.html" class="hub-card hub-card--active" id="cardDashboard"
+                aria-label="Acessar YT Toolbox Dashboard">
+                <div class="hub-card-glow"></div>
+                <div class="hub-card-icon">⚡</div>
+                <div class="hub-card-body">
+                    <h2 class="hub-card-title">YT Toolbox</h2>
+                    <p class="hub-card-desc">
+                        Dashboard completo do YouTube Studio Local — analise vídeos, gerencie prompts, histórico e
+                        canais de referência.
+                    </p>
+                    <div class="hub-card-tags">
+                        <span class="hub-tag">📊 Análise</span>
+                        <span class="hub-tag">🧠 Prompts</span>
+                        <span class="hub-tag">🗂️ Histórico</span>
+                        <span class="hub-tag">📺 Canais</span>
+                    </div>
+                </div>
+                <div class="hub-card-cta">
+                    <span>Acessar</span>
+                    <span class="hub-arrow">→</span>
+                </div>
+            </a>
+
+            <!-- Card 2: Banco de Ideias (em breve) -->
+            <div class="hub-card hub-card--soon" id="cardBancoIdeias" aria-label="Banco de Ideias — Em breve"
+                tabindex="0">
+                <div class="hub-card-glow hub-card-glow--soon"></div>
+                <div class="hub-soon-badge">EM BREVE</div>
+                <div class="hub-card-icon hub-card-icon--muted">💡</div>
+                <div class="hub-card-body">
+                    <h2 class="hub-card-title">Banco de Ideias</h2>
+                    <p class="hub-card-desc">
+                        Capture, organize e filtre suas ideias de vídeo com tags, nicho e status — nunca perca uma boa
+                        ideia de pauta.
+                    </p>
+                    <div class="hub-card-tags">
+                        <span class="hub-tag hub-tag--muted">🗃️ Organização</span>
+                        <span class="hub-tag hub-tag--muted">🏷️ Tags</span>
+                        <span class="hub-tag hub-tag--muted">🔍 Filtros</span>
+                        <span class="hub-tag hub-tag--muted">📌 Pautas</span>
+                    </div>
+                </div>
+                <div class="hub-card-cta hub-card-cta--muted">
+                    <span>Em desenvolvimento</span>
+                    <span class="hub-arrow">🔒</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Rodapé -->
+        <p class="hub-footer">YT Toolbox — Studio Local &nbsp;•&nbsp; Seus dados ficam só no seu dispositivo 🔐</p>
+
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="hubToast"></div>
+
+    <script src="hub.js"></script>
+</body>
+
+</html>

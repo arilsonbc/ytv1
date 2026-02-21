@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login — YT Toolbox</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login.css" />
+</head>
+
+<body class="login-body">
+
+    <!-- Canvas: efeito de rede neural interativa -->
+    <canvas id="neuralCanvas"></canvas>
+
+    <!-- Botão alternar tema (canto superior direito) -->
+    <button class="icon-btn login-theme-btn" id="loginThemeToggle" aria-label="Alternar tema" title="Tema">🌓</button>
+
+    <!-- Card principal de login -->
+    <div class="login-wrapper" role="main">
+        <div class="login-card" id="loginCard">
+
+            <!-- Cabeçalho da marca -->
+            <div class="login-brand">
+                <div class="login-logo">🎬</div>
+                <h1 class="login-title">YT Toolbox</h1>
+                <span class="login-subtitle">Studio <b>Local</b> • Acesso seguro</span>
+            </div>
+
+            <!-- ==============================
+           TELA: LOGIN
+      ============================== -->
+            <div id="screenLogin">
+                <h2 class="login-form-title">Entrar</h2>
+
+                <form id="formLogin" novalidate>
+                    <!-- Campo: E-mail -->
+                    <div class="login-field">
+                        <label class="login-label" for="loginEmail">E-mail</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">✉️</span>
+                            <input id="loginEmail" class="login-input" type="email" placeholder="seu@email.com"
+                                autocomplete="email" required />
+                        </div>
+                        <span class="login-error" id="loginEmailError"></span>
+                    </div>
+
+                    <!-- Campo: Senha -->
+                    <div class="login-field">
+                        <label class="login-label" for="loginPassword">Senha</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">🔒</span>
+                            <input id="loginPassword" class="login-input" type="password" placeholder="••••••••"
+                                autocomplete="current-password" required />
+                            <button type="button" class="login-toggle-eye" id="btnToggleEye"
+                                aria-label="Mostrar/ocultar senha" title="Mostrar senha">👁️</button>
+                        </div>
+                        <span class="login-error" id="loginPassError"></span>
+                    </div>
+
+                    <!-- Feedback geral -->
+                    <div class="login-alert" id="loginAlert" role="alert" aria-live="polite"></div>
+
+                    <!-- Botão principal: Entrar -->
+                    <button class="btn btn-primary login-btn-submit" type="submit" id="btnEntrar">
+                        <span id="btnEntrarIcon">⚡</span>
+                        <span id="btnEntrarText">Entrar</span>
+                    </button>
+                </form>
+
+                <!-- Links secundários -->
+                <div class="login-links">
+                    <button class="login-link" id="btnIrEsqueci" type="button">Esqueci minha senha</button>
+                    <span class="login-sep">•</span>
+                    <button class="login-link" id="btnIrCriarConta" type="button">Criar conta</button>
+                </div>
+            </div>
+
+            <!-- ==============================
+           TELA: RECUPERAR SENHA
+      ============================== -->
+            <div id="screenEsqueci" hidden>
+                <h2 class="login-form-title">Recuperar senha</h2>
+                <p class="login-help-text">Informe seu e-mail e enviaremos as instruções de redefinição.</p>
+
+                <form id="formEsqueci" novalidate>
+                    <div class="login-field">
+                        <label class="login-label" for="esqueciEmail">E-mail</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">✉️</span>
+                            <input id="esqueciEmail" class="login-input" type="email" placeholder="seu@email.com"
+                                autocomplete="email" required />
+                        </div>
+                        <span class="login-error" id="esqueciEmailError"></span>
+                    </div>
+
+                    <div class="login-alert" id="esqueciAlert" role="alert" aria-live="polite"></div>
+
+                    <button class="btn btn-primary login-btn-submit" type="submit" id="btnEnviarRecuperacao">
+                        <span>📧</span>
+                        <span>Enviar e-mail de recuperação</span>
+                    </button>
+                </form>
+
+                <div class="login-links">
+                    <button class="login-link" id="btnVoltarLogin" type="button">← Voltar ao login</button>
+                </div>
+            </div>
+
+            <!-- ==============================
+           TELA: CRIAR CONTA
+      ============================== -->
+            <div id="screenCriar" hidden>
+                <h2 class="login-form-title">Criar conta</h2>
+
+                <form id="formCriar" novalidate>
+                    <!-- Nome -->
+                    <div class="login-field">
+                        <label class="login-label" for="criarNome">Nome</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">👤</span>
+                            <input id="criarNome" class="login-input" type="text" placeholder="Seu nome"
+                                autocomplete="name" required />
+                        </div>
+                        <span class="login-error" id="criarNomeError"></span>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="login-field">
+                        <label class="login-label" for="criarEmail">E-mail</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">✉️</span>
+                            <input id="criarEmail" class="login-input" type="email" placeholder="seu@email.com"
+                                autocomplete="email" required />
+                        </div>
+                        <span class="login-error" id="criarEmailError"></span>
+                    </div>
+
+                    <!-- Senha -->
+                    <div class="login-field">
+                        <label class="login-label" for="criarPassword">Senha</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">🔒</span>
+                            <input id="criarPassword" class="login-input" type="password"
+                                placeholder="Mínimo 6 caracteres" autocomplete="new-password" required />
+                        </div>
+                        <span class="login-error" id="criarPassError"></span>
+                    </div>
+
+                    <!-- Confirmar Senha -->
+                    <div class="login-field">
+                        <label class="login-label" for="criarConfirm">Confirmar senha</label>
+                        <div class="login-input-wrap">
+                            <span class="login-icon">🔏</span>
+                            <input id="criarConfirm" class="login-input" type="password" placeholder="Repita a senha"
+                                autocomplete="new-password" required />
+                        </div>
+                        <span class="login-error" id="criarConfirmError"></span>
+                    </div>
+
+                    <div class="login-alert" id="criarAlert" role="alert" aria-live="polite"></div>
+
+                    <button class="btn btn-primary login-btn-submit" type="submit" id="btnCriarConta">
+                        <span>✨</span>
+                        <span>Criar minha conta</span>
+                    </button>
+                </form>
+
+                <div class="login-links">
+                    <button class="login-link" id="btnVoltarLoginDeCriar" type="button">← Já tenho conta</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Rodapé sutil -->
+        <p class="login-footer">YT Toolbox — Studio Local &nbsp;•&nbsp; Seus dados ficam só no seu dispositivo 🔐</p>
+    </div>
+
+    <!-- Toast (reutilizado do estilo base) -->
+    <div class="toast" id="loginToast"></div>
+
+    <script src="login.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,408 @@
+/* ============================================================
+   HUB MODULE — YT Toolbox
+   Tela de seleção pós-login
+   Depende de: style.css (variáveis CSS, .btn, .pill, .icon-btn etc.)
+   ============================================================ */
+
+/* ---------- Canvas de rede neural (mesmo do login) ---------- */
+#hubCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .6;
+    transition: opacity .3s ease;
+}
+
+/* ---------- Body ---------- */
+.hub-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 73px;
+    /* compensa a altura do header fixo */
+    background:
+        radial-gradient(ellipse 1100px 700px at 5% 10%, rgba(40, 167, 69, .13), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 95% 90%, rgba(40, 167, 69, .10), transparent 60%),
+        var(--bg);
+    transition: background .3s ease, color .3s ease;
+}
+
+/* ---------- Header ---------- */
+.hub-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    background: var(--surface2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+}
+
+.hub-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hub-logo {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.hub-brand-name {
+    font-size: 16px;
+    font-weight: 950;
+    letter-spacing: .2px;
+    color: var(--text);
+}
+
+.hub-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hub-user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--muted);
+    backdrop-filter: blur(8px);
+}
+
+/* ---------- Main ---------- */
+.hub-main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 64px;
+    gap: 36px;
+}
+
+/* ---------- Saudação ---------- */
+.hub-greeting {
+    text-align: center;
+    animation: hubFadeDown .5s cubic-bezier(.22, .68, 0, 1.15) both;
+}
+
+@keyframes hubFadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hub-title {
+    margin: 0 0 8px;
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 950;
+    letter-spacing: .3px;
+    color: var(--text);
+}
+
+.hub-subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 850;
+}
+
+/* ---------- Grid de cards ---------- */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 860px;
+    animation: hubFadeUp .5s .08s cubic-bezier(.22, .68, 0, 1.15) both;
+}
+
+@keyframes hubFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Card base ---------- */
+.hub-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 32px 28px 24px;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .09), 0 6px 18px rgba(0, 0, 0, .07);
+    text-decoration: none;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .22s cubic-bezier(.22, .68, 0, 1.2),
+        border-color .2s ease,
+        box-shadow .22s ease;
+}
+
+/* ---------- Card ativo ---------- */
+.hub-card--active {
+    border-color: rgba(40, 167, 69, .22);
+}
+
+.hub-card--active:hover {
+    transform: translateY(-6px) scale(1.012);
+    border-color: rgba(40, 167, 69, .55);
+    box-shadow:
+        0 28px 60px rgba(0, 0, 0, .13),
+        0 0 0 1px rgba(40, 167, 69, .18),
+        0 0 40px rgba(40, 167, 69, .10);
+}
+
+/* Efeito de brilho no hover */
+.hub-card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(40, 167, 69, .12), transparent 65%);
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+}
+
+.hub-card--active:hover .hub-card-glow {
+    opacity: 1;
+}
+
+/* ---------- Card "em breve" ---------- */
+.hub-card--soon {
+    opacity: .72;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, .06);
+}
+
+.hub-card--soon:hover {
+    transform: none;
+    border-color: var(--border);
+}
+
+.hub-card-glow--soon {
+    background: radial-gradient(circle at 50% 0%, rgba(255, 159, 10, .08), transparent 65%);
+}
+
+/* Badge "Em Breve" */
+.hub-soon-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(255, 159, 10, .14);
+    border: 1px solid rgba(255, 159, 10, .30);
+    color: var(--warn);
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: .8px;
+    /* Animação de pulso */
+    animation: badgePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0px rgba(255, 159, 10, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 10px rgba(255, 159, 10, .35);
+    }
+}
+
+/* ---------- Conteúdo interno do card ---------- */
+.hub-card-icon {
+    font-size: 44px;
+    line-height: 1;
+    filter: drop-shadow(0 4px 10px rgba(40, 167, 69, .3));
+    transition: transform .25s ease;
+}
+
+.hub-card--active:hover .hub-card-icon {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+.hub-card-icon--muted {
+    filter: grayscale(.4) opacity(.75);
+}
+
+.hub-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.hub-card-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 950;
+    letter-spacing: .2px;
+    color: var(--text);
+}
+
+.hub-card-desc {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 850;
+    color: var(--muted);
+    line-height: 1.55;
+}
+
+/* Tags de features */
+.hub-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.hub-tag {
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--muted);
+    transition: border-color .15s ease;
+}
+
+.hub-card--active:hover .hub-tag {
+    border-color: rgba(40, 167, 69, .25);
+}
+
+.hub-tag--muted {
+    opacity: .65;
+}
+
+/* CTA do card */
+.hub-card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 950;
+    color: var(--brand);
+    letter-spacing: .3px;
+}
+
+.hub-card-cta--muted {
+    color: var(--muted);
+    opacity: .7;
+}
+
+.hub-arrow {
+    font-size: 18px;
+    transition: transform .2s cubic-bezier(.22, .68, 0, 1.4);
+}
+
+.hub-card--active:hover .hub-arrow {
+    transform: translateX(5px);
+}
+
+/* ---------- Rodapé ---------- */
+.hub-footer {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 850;
+    text-align: center;
+    opacity: .65;
+    margin: 0;
+}
+
+/* ---------- Toast (reutilizado) ---------- */
+/* Já definido em style.css, o hub usa o mesmo */
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 680px) {
+    .hub-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hub-header {
+        padding: 14px 18px;
+    }
+
+    .hub-card {
+        padding: 24px 20px 20px;
+    }
+
+    .hub-card-icon {
+        font-size: 36px;
+    }
+
+    .hub-card-title {
+        font-size: 18px;
+    }
+}
+
+/* ---------- Animação shake (clique no card em breve) ---------- */
+@keyframes hubShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-8px);
+    }
+
+    40% {
+        transform: translateX(7px);
+    }
+
+    60% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+.hub-card-shake {
+    animation: hubShake .45s cubic-bezier(.36, .07, .19, .97) both !important;
+}

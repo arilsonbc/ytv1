@@ -1,0 +1,881 @@
+/* ============================================================
+   LANDING PAGE MODULE — YT Toolbox
+   Página de apresentação da plataforma
+   Depende de: style.css (variáveis CSS e classes base)
+   ============================================================ */
+
+/* ---------- Reset / Corpo ---------- */
+.lp-body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    /* Um único plano escuro — os orbs e o canvas criam toda a atmosfera */
+    background: #080a0d;
+    color: #f3f5ff;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ---------- Canvas partículas (z-index 1 — sobre os orbs) ---------- */
+#lpCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .75;
+}
+
+/* ============================================================
+   ORBS DE LUZ NEON — fundo contínuo e fluido
+   Cada orb é uma bolha de gradiente que pulsa e flutua
+   de forma independente, criando um ambiente orgânico.
+   ============================================================ */
+.lp-glow-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.lp-orb {
+    position: absolute;
+    border-radius: 50%;
+    /* blur alto = transição suave, sem bordas visíveis */
+    filter: blur(90px);
+    mix-blend-mode: screen;
+}
+
+/* Orb 1 — grande, topo-esquerda, move lento */
+.lp-orb--1 {
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(50, 205, 50, .20) 0%, transparent 70%);
+    top: -20%;
+    left: -15%;
+    animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+/* Orb 2 — médio, topo-direita, pulso rápido */
+.lp-orb--2 {
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(127, 255, 0, .14) 0%, transparent 70%);
+    top: 5%;
+    right: -10%;
+    animation: orbFloat2 14s ease-in-out infinite alternate;
+    animation-delay: -4s;
+}
+
+/* Orb 3 — meio da página, deriva verticalmente */
+.lp-orb--3 {
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(0, 229, 255, .08) 0%, transparent 65%);
+    top: 40%;
+    left: 30%;
+    animation: orbFloat3 22s ease-in-out infinite alternate;
+    animation-delay: -9s;
+}
+
+/* Orb 4 — inferior-esquerda */
+.lp-orb--4 {
+    width: 750px;
+    height: 750px;
+    background: radial-gradient(circle, rgba(57, 255, 20, .12) 0%, transparent 68%);
+    bottom: 10%;
+    left: -10%;
+    animation: orbFloat4 16s ease-in-out infinite alternate;
+    animation-delay: -6s;
+}
+
+/* Orb 5 — inferior-direita, pulsante */
+.lp-orb--5 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(50, 205, 50, .16) 0%, transparent 70%);
+    bottom: -5%;
+    right: 5%;
+    animation: orbFloat5 20s ease-in-out infinite alternate;
+    animation-delay: -12s;
+}
+
+@keyframes orbFloat1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: .9;
+    }
+
+    40% {
+        transform: translate(60px, 80px) scale(1.12);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(30px, 140px) scale(0.9);
+        opacity: .7;
+    }
+}
+
+@keyframes orbFloat2 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: .8;
+    }
+
+    50% {
+        transform: translate(-80px, 60px) scale(1.18);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-40px, 120px) scale(0.88);
+        opacity: .75;
+    }
+}
+
+@keyframes orbFloat3 {
+    0% {
+        transform: translate(0, 0) scale(0.95);
+        opacity: .6;
+    }
+
+    35% {
+        transform: translate(50px, -60px) scale(1.15);
+        opacity: .9;
+    }
+
+    100% {
+        transform: translate(-60px, 80px) scale(1);
+        opacity: .65;
+    }
+}
+
+@keyframes orbFloat4 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: .7;
+    }
+
+    45% {
+        transform: translate(70px, -70px) scale(1.1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(20px, -130px) scale(0.92);
+        opacity: .8;
+    }
+}
+
+@keyframes orbFloat5 {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: .85;
+    }
+
+    30% {
+        transform: translate(-50px, -50px) scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-90px, -100px) scale(0.9);
+        opacity: .7;
+    }
+}
+
+
+/* ============================================================
+   REVEAL SEQUENCE — oculto antes do typewriter terminar
+   ============================================================ */
+
+/* Estado inicial: invisível e deslocado para baixo */
+.lp-pending {
+    opacity: 0;
+    transform: translateY(55px);
+    pointer-events: none;
+}
+
+/* Estado final: visível, na posição correta  */
+/* Curva de baixa gravidade — sobe devagar, desacelera suavemente */
+.lp-revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+    transition:
+        opacity 1.15s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Garante que a navbar não conflita com seu prprio transform */
+.lp-nav.lp-revealed {
+    transform: none !important;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.lp-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+}
+
+.lp-nav.scrolled {
+    background: rgba(9, 11, 15, .82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+.lp-nav-inner {
+    width: min(1120px, 100%);
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* Logo */
+.lp-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #f3f5ff;
+    user-select: none;
+}
+
+.lp-logo-icon {
+    font-size: 26px;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(50, 205, 50, .45));
+    animation: logoBlink 4s ease-in-out infinite;
+}
+
+@keyframes logoBlink {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 6px rgba(50, 205, 50, .35));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 16px rgba(50, 205, 50, .75));
+    }
+}
+
+.lp-logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .3px;
+}
+
+.lp-logo-text strong {
+    color: #7fff00;
+}
+
+/* Ações da navbar */
+.lp-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Botão "Fazer login" (discreto) */
+.lp-btn-login {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: rgba(255, 255, 255, .06);
+    color: rgba(243, 245, 255, .85);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background .2s ease, border-color .2s ease, transform .15s ease, color .15s ease;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+}
+
+.lp-btn-login:hover {
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .22);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.lp-btn-login--lg {
+    height: 52px;
+    padding: 0 26px;
+    font-size: 14px;
+    border-radius: 16px;
+}
+
+/* ============================================================
+   BOTÃO "CRIAR CONTA" — efeito de luz girante
+   ============================================================ */
+.lp-btn-signup {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 12px;
+    background: #7fff00;
+    color: #0a1800;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .4px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    /* Isolamento para o pseudo-elemento de luz */
+    isolation: isolate;
+    white-space: nowrap;
+    /* Sombra verde vibrante */
+    box-shadow:
+        0 0 0 0 rgba(127, 255, 0, .0),
+        0 4px 18px rgba(127, 255, 0, .35);
+    transition: box-shadow .25s ease, background .2s ease;
+    animation: lpBtnFloat 2.8s ease-in-out infinite;
+    user-select: none;
+}
+
+/* Faixa de luz que circula o botão */
+.lp-btn-signup-light {
+    position: absolute;
+    inset: -3px;
+    border-radius: 16px;
+    background: conic-gradient(from var(--light-angle, 0deg),
+            transparent 0%,
+            transparent 60%,
+            rgba(255, 255, 255, .9) 72%,
+            rgba(200, 255, 80, 1) 78%,
+            rgba(255, 255, 255, .9) 84%,
+            transparent 96%,
+            transparent 100%);
+    z-index: -1;
+    animation: lightSweep 2s linear infinite;
+    /* Máscara para o efeito aparecer só nas bordas */
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    padding: 3px;
+}
+
+@property --light-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes lightSweep {
+    to {
+        --light-angle: 360deg;
+    }
+}
+
+.lp-btn-signup-text {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.lp-btn-signup:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+        0 0 32px rgba(127, 255, 0, .65),
+        0 8px 32px rgba(127, 255, 0, .45);
+    background: #8dff10;
+    /* Pausa a flutuação no hover para não conflitar com o transform */
+    animation-play-state: paused;
+}
+
+.lp-btn-signup:active {
+    transform: translateY(0) scale(0.99);
+}
+
+/* Flutuação pulsante — combina float + glow */
+@keyframes lpBtnFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+        box-shadow:
+            0 0 0 0 rgba(127, 255, 0, 0),
+            0 4px 18px rgba(127, 255, 0, .35);
+    }
+
+    40% {
+        transform: translateY(-7px);
+        box-shadow:
+            0 0 28px rgba(127, 255, 0, .55),
+            0 8px 28px rgba(127, 255, 0, .45);
+    }
+
+    60% {
+        transform: translateY(-7px);
+        box-shadow:
+            0 0 36px rgba(127, 255, 0, .65),
+            0 10px 32px rgba(127, 255, 0, .50);
+    }
+}
+
+/* Variante grande (Hero) */
+.lp-btn-signup--lg {
+    height: 52px;
+    padding: 0 30px;
+    font-size: 15px;
+    border-radius: 16px;
+}
+
+.lp-btn-signup--lg .lp-btn-signup-light {
+    border-radius: 20px;
+    animation-duration: 1.6s;
+}
+
+/* Variante extra-grande (CTA section) */
+.lp-btn-signup--xl {
+    height: 60px;
+    padding: 0 40px;
+    font-size: 16px;
+    border-radius: 18px;
+    box-shadow:
+        0 0 0 0 rgba(127, 255, 0, 0),
+        0 6px 32px rgba(127, 255, 0, .45);
+}
+
+.lp-btn-signup--xl .lp-btn-signup-light {
+    inset: -4px;
+    border-radius: 22px;
+    animation-duration: 1.4s;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.lp-hero {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    gap: 28px;
+}
+
+/* Badge topo */
+.lp-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(127, 255, 0, .30);
+    background: rgba(127, 255, 0, .07);
+    color: rgba(200, 255, 100, .9);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    backdrop-filter: blur(8px);
+}
+
+/* Título principal */
+.lp-hero-title {
+    margin: 0;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    color: #f3f5ff;
+    /* Sem animation de entrada — o typewriter cuida disso */
+    opacity: 1;
+    /* Altura mínima reservada para evitar layout shift durante a digitação */
+    min-height: 2.3em;
+}
+
+/* Cursor piscante do typewriter */
+.lp-type-cursor {
+    display: inline-block;
+    width: 3px;
+    background: #7fff00;
+    color: transparent;
+    /* esconde o caractere | */
+    border-radius: 2px;
+    margin-left: 2px;
+    vertical-align: baseline;
+    font-size: .85em;
+    /* Pisca continuamente enquanto ativo */
+    animation: cursorBlink .7s step-end infinite;
+    transition: opacity .3s ease;
+}
+
+.lp-type-cursor--hide {
+    opacity: 0;
+    animation: none;
+}
+
+@keyframes cursorBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Texto com gradiente */
+.lp-gradient-text {
+    background: linear-gradient(135deg, #7fff00 0%, #32CD32 45%, #00e5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Descrição */
+.lp-hero-desc {
+    margin: 0;
+    max-width: 580px;
+    font-size: clamp(15px, 2.2vw, 18px);
+    font-weight: 400;
+    line-height: 1.65;
+    color: rgba(243, 245, 255, .62);
+}
+
+/* CTAs do hero */
+.lp-hero-ctas {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Stats */
+.lp-stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.lp-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 16px 32px;
+}
+
+.lp-stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: #7fff00;
+    letter-spacing: -.02em;
+    line-height: 1;
+}
+
+.lp-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(243, 245, 255, .45);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.lp-stat-sep {
+    width: 1px;
+    height: 36px;
+    background: rgba(255, 255, 255, .10);
+    border-radius: 999px;
+}
+
+/* ============================================================
+   FEATURES
+   ============================================================ */
+.lp-features {
+    position: relative;
+    z-index: 2;
+    padding: 80px 24px 100px;
+    /* Sem fundo — o orb layer cria o contexto visual */
+    background: transparent;
+}
+
+.lp-section-header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.lp-section-title {
+    margin: 0 0 14px;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 900;
+    letter-spacing: -.02em;
+    color: #f3f5ff;
+}
+
+.lp-section-sub {
+    margin: 0;
+    font-size: 16px;
+    color: rgba(243, 245, 255, .5);
+    font-weight: 400;
+}
+
+/* ---- Rabisco neon em "um só lugar" ---- */
+.lp-scribble-wrap {
+    position: relative;
+    display: inline-block;
+    /* garante que o SVG se sobreponha sem deslocar o texto */
+}
+
+.lp-scribble-svg {
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    /* fica logo abaixo da linha de base */
+    width: 100%;
+    height: 18px;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.lp-scribble-path {
+    fill: none;
+    stroke: #7fff00;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* Comprimento total do path ≈ 256 px — oculto inicialmente */
+    stroke-dasharray: 280;
+    stroke-dashoffset: 280;
+    /* Brilho neon */
+    filter: drop-shadow(0 0 6px rgba(127, 255, 0, .9)) drop-shadow(0 0 14px rgba(127, 255, 0, .6));
+    transition: stroke-dashoffset 0s;
+    /* sem transição enquanto aguarda o trigger */
+}
+
+/* Classe adicionada pelo JS quando o elemento entra no viewport */
+.lp-scribble-draw .lp-scribble-path {
+    /* Delay: espera a animação de zoom-in da seção (≈ 0.75s) terminar antes de desenhar */
+    transition: stroke-dashoffset 0.7s 0.65s cubic-bezier(.4, 0, .2, 1);
+    stroke-dashoffset: 0;
+}
+
+/* Quando sai do viewport, reseta o rabisco (sem transição) */
+.lp-scribble-reset .lp-scribble-path {
+    transition: none;
+    stroke-dashoffset: 280;
+}
+
+.lp-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+/* Card de feature */
+.lp-feature-card {
+    padding: 28px 26px;
+    border-radius: 20px;
+    /* Vidro ultra-transparente — quase invisível sobre o fundo */
+    border: 1px solid rgba(127, 255, 0, .06);
+    background: rgba(255, 255, 255, .018);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    cursor: default;
+    transform-origin: center;
+    will-change: transform, opacity;
+    transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
+}
+
+.lp-feature-card:hover,
+.lp-feature-card:focus {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(127, 255, 0, .22);
+    background: rgba(127, 255, 0, .035);
+    box-shadow:
+        0 0 40px rgba(127, 255, 0, .10),
+        0 14px 44px rgba(0, 0, 0, .38),
+        inset 0 1px 0 rgba(127, 255, 0, .12);
+    outline: none;
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+.lp-feature-icon {
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 16px;
+    display: block;
+    transition: transform .2s ease;
+}
+
+.lp-feature-card:hover .lp-feature-icon {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.lp-feature-title {
+    margin: 0 0 10px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #f3f5ff;
+}
+
+.lp-feature-desc {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgba(243, 245, 255, .52);
+}
+
+/* ============================================================
+   CTA FINAL
+   ============================================================ */
+.lp-cta-section {
+    position: relative;
+    z-index: 2;
+    padding: 0 24px 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lp-cta-card {
+    position: relative;
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    padding: 64px 48px;
+    border-radius: 28px;
+    /* Bordas quase invisíveis — brilho neon sutil */
+    border: 1px solid rgba(127, 255, 0, .10);
+    background: rgba(127, 255, 0, .025);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    overflow: hidden;
+    box-shadow:
+        0 0 80px rgba(127, 255, 0, .06),
+        inset 0 1px 0 rgba(127, 255, 0, .08);
+}
+
+.lp-cta-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    background: radial-gradient(ellipse 500px 300px at 50% 120%, rgba(127, 255, 0, .18), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.lp-cta-title {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 16px;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 900;
+    color: #f3f5ff;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+}
+
+.lp-cta-desc {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 36px;
+    font-size: 15px;
+    color: rgba(243, 245, 255, .52);
+    line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.lp-footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 32px;
+    /* Sem borda — fundo contínuo */
+    border-top: none;
+    color: rgba(243, 245, 255, .25);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 600px) {
+    .lp-hero {
+        padding: 100px 20px 60px;
+        gap: 22px;
+    }
+
+    .lp-stat {
+        padding: 12px 20px;
+    }
+
+    .lp-features {
+        padding: 60px 20px 80px;
+    }
+
+    .lp-cta-card {
+        padding: 40px 24px;
+    }
+
+    .lp-btn-signup--xl {
+        height: 54px;
+        padding: 0 28px;
+        font-size: 14px;
+    }
+
+    .lp-nav-actions {
+        gap: 8px;
+    }
+
+    .lp-btn-login {
+        padding: 0 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .lp-logo-text {
+        display: none;
+    }
+}
